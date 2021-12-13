@@ -7,5 +7,5 @@
 * 后端 jdc_backend
 [文档](./jdc_backend/README.md)
 
-* 前端flutter
+* 前端 flutter
 [文档](./jdc_flutter/README.md)
