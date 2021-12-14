@@ -34,11 +34,11 @@ module.exports = {
     async getToken(client_url) {
         // 判断文件中是否有token
         let { client_id, client_secret, token, expire } = await this.getNode(client_url);
-        if (token) {
-            if (dayjs().isBefore(dayjs(expire).add(3, "day"))) {
-                return token;
-            }
-        }
+        // if (token) {
+        //     if (dayjs().isBefore(dayjs(expire).add(3, "day"))) {
+        //         return token;
+        //     }
+        // }
         // 改为新的openApi
         const body = await this.curl(`${client_url}/open/auth/token`, {
             headers: {
@@ -52,16 +52,16 @@ module.exports = {
             dataType: "json"
         });
         if (body.status === 200) {
-            let res = await this.getConfig("nodeList");
-            for (let i = 0; i < res.length; i++) {
-                const element = res[i];
-                if (element.client_url == client_url) {
-                    res[i]["token"] = body.data.data.token;
-                    res[i]["expire"] = dayjs();
-                }
-            }
-            // 写入文件
-            await writeFile(filePath, JSON.stringify(res));
+            //     let res = await this.getConfig("nodeList");
+            //     for (let i = 0; i < res.length; i++) {
+            //         const element = res[i];
+            //         if (element.client_url == client_url) {
+            //             res[i]["token"] = body.data.data.token;
+            //             res[i]["expire"] = dayjs();
+            //         }
+            //     }
+            //     // 写入文件
+            //     await writeFile(filePath, JSON.stringify(res));
             return body.data.data.token;
         }
         return "";

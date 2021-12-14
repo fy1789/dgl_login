@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
 
     configDio(
       //adb kill-server && adb server && adb shell
-      baseUrl: inProduction ? 'http://127.0.0.1:9997' : 'http://192.168.1.109:9997',
+      baseUrl: inProduction ? 'http://127.0.0.1:9997' : 'http://192.168.1.179:9997',
       interceptors: interceptors,
     );
   }

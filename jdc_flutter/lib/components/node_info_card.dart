@@ -140,6 +140,7 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
                                           screenStateController.setWskeyFlag(true);
                                         },
                                       ),
+                                      Gaps.vGap10,
                                       Selector<ScreenStateController, bool>(
                                           builder: (_, wskeyFlag, __) {
                                             return wskeyFlag
@@ -165,7 +166,10 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
                                                                 color: primaryColor,
                                                                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                                                               ),
-                                                              child: Icon(Icons.clear),
+                                                              child: Icon(
+                                                                Icons.clear,
+                                                                color: Colors.white,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
