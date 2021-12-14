@@ -35,8 +35,8 @@ class StateLayout extends StatelessWidget {
                   )
                 : MyButton(
                     text: "点击刷新",
-                    width: 60,
-                    height: 30,
+                    minWidth: 60,
+                    minHeight: 30,
                     onPressed: () {
                       onRefresh!();
                     },

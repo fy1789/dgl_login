@@ -51,7 +51,7 @@ class LoadAssetImage extends StatelessWidget {
       required this.height,
       this.cacheWidth,
       this.cacheHeight,
-      required this.fit,
+      this.fit = BoxFit.cover,
       this.format = ImageFormat.png,
       this.color})
       : super(key: key);

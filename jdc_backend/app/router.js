@@ -18,4 +18,6 @@ module.exports = (app) => {
     router.get("/api/getGonggao", controller.home.getGonggao);
     router.post("/api/saveCkLyq", controller.home.saveCkLyq);
     router.post("/api/saveCkWs", controller.home.addCookieWs);
+
+    app.ws.route("/", app.controller.sms.index);
 };

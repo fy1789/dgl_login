@@ -128,7 +128,7 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
                                               }
                                             });
                                           } else {
-                                            NavigatorUtils.push(context, ScreenRouter.winWebviewPage);
+                                            NavigatorUtils.push(context, ScreenRouter.loginSmsPage);
                                             // Toast.show("web,电脑端不支持手机验证码登陆,请选择wskey登陆");
                                           }
                                         },

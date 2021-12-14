@@ -4,6 +4,7 @@ import 'package:jdc/net/dio_utils.dart';
 import 'package:jdc/net/http_api.dart';
 import 'package:jdc/util/log_utils.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:web_socket_channel/io.dart';
 
 class ScreenStateController extends ChangeNotifier {
   int _screentIndex = 0;
@@ -73,5 +74,26 @@ class ScreenStateController extends ChangeNotifier {
   void setWskeyFlag(bool flag) {
     _wskeyFlag = flag;
     notifyListeners();
+  }
+
+  // 初始化消息
+  IOWebSocketChannel _channel = new IOWebSocketChannel.connect('ws://127.0.0.1:9997/');
+  IOWebSocketChannel get channel => _channel;
+
+  // 监听消息
+  void listWebSoc() {
+    channel.stream.listen((message) {
+      Log.d(message);
+      if (message) {
+        //
+      }
+      // channel.sink.add('received!');
+      // channel.sink.close(status.goingAway);
+    });
+  }
+
+  // 发送消息
+  void sendMess() {
+    channel.sink.add('received!');
   }
 }
