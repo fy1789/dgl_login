@@ -9,6 +9,7 @@ import 'package:jdc/net/dio_utils.dart';
 import 'package:jdc/net/http_api.dart';
 import 'package:jdc/res/gaps.dart';
 import 'package:jdc/routes/fluro_navigator.dart';
+import 'package:jdc/screens/screen_router.dart';
 import 'package:jdc/util/device_utils.dart';
 import 'package:jdc/util/store.dart';
 import 'package:jdc/util/toast.dart';
@@ -127,7 +128,8 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
                                               }
                                             });
                                           } else {
-                                            Toast.show("web不支持手机验证码登陆,请选择wskey登陆");
+                                            NavigatorUtils.push(context, ScreenRouter.winWebviewPage);
+                                            // Toast.show("web,电脑端不支持手机验证码登陆,请选择wskey登陆");
                                           }
                                         },
                                       ),
@@ -188,6 +190,7 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
                                                           ),
                                                           MyButton(
                                                             onPressed: () async {
+                                                              screenStateController.setWskeyFlag(false);
                                                               // 上传wskey
                                                               await checkLogin(_controller.text, "0");
                                                             },
@@ -226,7 +229,7 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("(状态:${widget.info.activite ? '在线' : '不在线'})"),
+            Text("节点状态: ${widget.info.activite ? '在线' : '不在线'}"),
             Text(
               "${widget.info.clientName}",
               maxLines: 1,

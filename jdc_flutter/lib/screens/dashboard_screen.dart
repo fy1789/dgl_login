@@ -25,9 +25,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   void initState() {
+    super.initState();
     screenStateController = Store.value<ScreenStateController>(context);
     getUserData();
-    super.initState();
+    getGonggao();
   }
 
   Future getUserData() async {
