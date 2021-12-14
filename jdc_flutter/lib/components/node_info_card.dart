@@ -144,15 +144,37 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
                                       Column(
                                         children: [
                                           TextField(
-                                            maxLines: 1,
-                                            autofocus: true,
-                                            controller: _controller,
                                             decoration: InputDecoration(
                                               hintText: "请填入wskey",
-                                              border: InputBorder.none,
+                                              fillColor: secondaryColor,
+                                              filled: true,
+                                              border: OutlineInputBorder(
+                                                borderSide: BorderSide.none,
+                                                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                              ),
+                                              suffixIcon: InkWell(
+                                                onTap: () {
+                                                  _controller.text = "";
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(defaultPadding * 0.75),
+                                                  margin: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+                                                  decoration: BoxDecoration(
+                                                    color: primaryColor,
+                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                                  ),
+                                                  child: Icon(Icons.clear),
+                                                ),
+                                              ),
                                             ),
+                                            autofocus: true,
+                                            controller: _controller,
+                                            maxLines: 1,
                                           ),
+                                          Gaps.vGap10,
                                           Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               MyButton(
                                                 onPressed: () => screenStateController.setWskeyFlag(false),
