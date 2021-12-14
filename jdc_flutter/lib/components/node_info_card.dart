@@ -15,6 +15,7 @@ import 'package:jdc/util/toast.dart';
 import 'package:jdc/util/utils.dart';
 import 'package:jdc/widgets/base_dialog.dart';
 import 'package:jdc/widgets/my_button.dart';
+import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
 
 class NodeInfoCard extends StatefulWidget {
@@ -31,7 +32,6 @@ class NodeInfoCard extends StatefulWidget {
 
 class _NodeInfoCardState extends State<NodeInfoCard> {
   late ScreenStateController screenStateController;
-  late Timer _timer;
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -47,12 +47,12 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
     var nodeUrl = SpUtil.getString("nodeUrl");
     // 直接发送链接
     await DioUtils.instance.requestNetwork(Method.post, type == "1" ? HttpApi.saveCk : HttpApi.saveWs,
-        params: {"value": cookie}, queryParameters: {"client_url": nodeUrl}, onSuccess: (resultList) {
+        params: {"value": cookie}, queryParameters: {"client_url": nodeUrl}, onSuccess: (resultList) async {
       Toast.show(resultList["message"]);
       SpUtil.putString("eid", resultList["eid"]);
       // 更新user页面
       screenStateController.setEid(resultList["eid"]);
-      screenStateController.getUserData();
+      await screenStateController.getUserData();
       // 退出弹窗
       NavigatorUtils.goBack(context);
     }, onError: (_, msg) {
@@ -62,7 +62,6 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
 
   @override
   void dispose() {
-    _timer.cancel();
     super.dispose();
   }
 
@@ -141,56 +140,62 @@ class _NodeInfoCardState extends State<NodeInfoCard> {
                                           screenStateController.setWskeyFlag(true);
                                         },
                                       ),
-                                      Column(
-                                        children: [
-                                          TextField(
-                                            decoration: InputDecoration(
-                                              hintText: "请填入wskey",
-                                              fillColor: secondaryColor,
-                                              filled: true,
-                                              border: OutlineInputBorder(
-                                                borderSide: BorderSide.none,
-                                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                              ),
-                                              suffixIcon: InkWell(
-                                                onTap: () {
-                                                  _controller.text = "";
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.all(defaultPadding * 0.75),
-                                                  margin: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
-                                                  decoration: BoxDecoration(
-                                                    color: primaryColor,
-                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                                  ),
-                                                  child: Icon(Icons.clear),
-                                                ),
-                                              ),
-                                            ),
-                                            autofocus: true,
-                                            controller: _controller,
-                                            maxLines: 1,
-                                          ),
-                                          Gaps.vGap10,
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              MyButton(
-                                                onPressed: () => screenStateController.setWskeyFlag(false),
-                                                text: "取消",
-                                              ),
-                                              MyButton(
-                                                onPressed: () async {
-                                                  // 上传wskey
-                                                  await checkLogin(_controller.text, "0");
-                                                },
-                                                text: "确定",
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      )
+                                      Selector<ScreenStateController, bool>(
+                                          builder: (_, wskeyFlag, __) {
+                                            return wskeyFlag
+                                                ? Column(
+                                                    children: [
+                                                      TextField(
+                                                        decoration: InputDecoration(
+                                                          hintText: "请填入wskey",
+                                                          fillColor: secondaryColor,
+                                                          filled: true,
+                                                          border: OutlineInputBorder(
+                                                            borderSide: BorderSide.none,
+                                                            borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                                          ),
+                                                          suffixIcon: InkWell(
+                                                            onTap: () {
+                                                              _controller.text = "";
+                                                            },
+                                                            child: Container(
+                                                              padding: EdgeInsets.all(defaultPadding * 0.75),
+                                                              margin: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
+                                                              decoration: BoxDecoration(
+                                                                color: primaryColor,
+                                                                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                                              ),
+                                                              child: Icon(Icons.clear),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        autofocus: true,
+                                                        controller: _controller,
+                                                        maxLines: 1,
+                                                      ),
+                                                      Gaps.vGap10,
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          MyButton(
+                                                            onPressed: () => screenStateController.setWskeyFlag(false),
+                                                            text: "取消",
+                                                          ),
+                                                          MyButton(
+                                                            onPressed: () async {
+                                                              // 上传wskey
+                                                              await checkLogin(_controller.text, "0");
+                                                            },
+                                                            text: "确定",
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  )
+                                                : Container();
+                                          },
+                                          selector: (_, store) => store.wskeyFlag)
                                     ],
                                   )
                                 ],
